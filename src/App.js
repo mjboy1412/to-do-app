@@ -1,60 +1,29 @@
-import React, {Component} from 'react';
-import TodoList from './TodoList';
-import AddItem from "./AddItem";
+import React from 'react';
+import TodoApp from './components/TodoApp/TodoApp';
+import About from './components/About/About';
+import Calculator from './components/Caculator/Calculator';
+import Page404 from './components/OtherSmallPage/Page404';
+import {Link, Route, Switch} from "react-router-dom";
 
-class App extends Component {
-    state = {
-        todoItems: [
-            {id: 1, content: 'learn JS'},
-            {id: 2, content: 'learn React'}
-        ]
-    };
-
-
-    deleteTodoItem = (id) => {
-        console.log("deleted " + id);
-        let updatedTodoItem = this.state.todoItems.filter(todoItem => {
-            return todoItem.id !== id;
-        });
-        this.setState({
-            todoItems: updatedTodoItem
-        });
-    };
-    addTodoItem = (item) => {
-        console.log("add " + item);
-        item.id = Math.random();
-        let updatedTodoItem = this.state.todoItems;
-        updatedTodoItem.push(item);
-        this.setState({
-            todoItems: updatedTodoItem,
-        });
-    };
-    editTodoItem = (editedItem) => {
-        let found = this.state.todoItems.find(item => item.id = editedItem.id);
-        console.log(found);
-    }
-
-
-
+class App extends React.Component {
     render() {
-        let listItem;
-        if(this.state.todoItems){
-            listItem = this.state.todoItems.map(item => {
-                return <TodoList deleteTodoItem ={this.deleteTodoItem} item={item} key={item.id} editTodoItem={this.editTodoItem}/>
-            })
-        }else {
-            listItem = <p className="center">Nothing else to do</p>;
-        }
         return (
-            <div className="todo-app container">
-                <h1 className="center blue-text">To-do app</h1>
-                <AddItem addItem={this.addTodoItem} />
-                {listItem}
+            <div>
+                <header>
+                    <Link to={'/todoapp'}>To-do app</Link>&nbsp;&nbsp;&nbsp;
+                    <Link to={'/about'}>about</Link>
+                </header>
+                <main>
+                    <Switch>
+                        <Route exact path='/(home|todoapp|)' component={TodoApp}/>
+                        <Route path='/about' component={About}/>
+                        <Route path='/calculator' component={Calculator}/>
+                        <Route component={Page404}/>
+                    </Switch>
+                </main>
             </div>
+
         );
-
-
-
     }
 }
 
